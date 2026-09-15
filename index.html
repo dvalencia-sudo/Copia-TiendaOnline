@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Canasta Fresca: productos del campo directo a tu puerta."
+    />
+    <title>Canasta Fresca | Del campo a tu puerta</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <!-- Cabecera fija: marca, navegacion principal y accesos al inventario y carrito. -->
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Canasta Fresca, inicio"
+        ><img class="brand-mark" src="logo_canasta.png" alt="" /><span
+          class="brand-name"
+          >Canasta Fresca</span
+        ></a
+      >
+      <nav class="main-nav" aria-label="Navegacion principal">
+        <a href="#productos">Productos</a
+        ><a href="#como-funciona">Como funciona</a>
+      </nav>
+      <div class="header-actions">
+        <button class="admin-toggle" id="adminToggle" type="button">
+          Administrar</button
+        ><button
+          class="cart-toggle"
+          id="cartToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="orderPanel"
+        >
+          Mi pedido <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+    <main id="inicio">
+      <!-- Hero de bienvenida y llamada principal hacia el catalogo. -->
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Despensa honesta, sabor de origen</p>
+          <h1>Lo bueno del campo, <em>sin rodeos.</em></h1>
+          <p class="hero-description">
+            Compra frutas, verduras, granos y legumbres seleccionados. Armamos
+            tu canasta y la llevamos a tu puerta en un plazo máximo de 2 días.
+          </p>
+          <a href="#productos" class="primary-button"
+            >Explorar productos <span aria-hidden="true">&#8595;</span></a
+          >
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-orbit hero-orbit-one"></div>
+          <div class="hero-orbit hero-orbit-two"></div>
+          <div class="hero-basket">🧺</div>
+          <span class="hero-leaf leaf-one">&#127793;</span
+          ><span class="hero-leaf leaf-two">&#127807;</span
+          ><span class="hero-stamp">fresco<br />local</span>
+        </div>
+      </section>
+      <!-- Franja de confianza que resume el flujo de compra y entrega. -->
+      <section
+        class="trust-strip"
+        id="como-funciona"
+        aria-label="Ventajas de comprar en Canasta Fresca"
+      >
+        <div>
+          <span class="trust-icon">01</span>
+          <p><strong>Elige</strong><br />lo que necesitas</p>
+        </div>
+        <div>
+          <span class="trust-icon">02</span>
+          <p><strong>Armamos</strong><br />tu canasta</p>
+        </div>
+        <div>
+          <span class="trust-icon">03</span>
+          <p><strong>Recibe</strong><br />en hasta 2 días</p>
+        </div>
+      </section>
+      <!-- Catalogo dinamico: los botones y las tarjetas los genera js/app.js. -->
+      <section class="catalog" id="productos">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">La seleccion de esta semana</p>
+            <h2>Compra por categoria</h2>
+          </div>
+          <p class="catalog-note">
+            Precios claros. Productos sencillos.<br />Sin minimo de compra.
+          </p>
+        </div>
+        <div
+          class="category-tabs"
+          id="categoryTabs"
+          role="tablist"
+          aria-label="Categorias de productos"
+        ></div>
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span>Canasta Fresca</span><span>Del campo a tu puerta</span>
+    </footer>
+    <!-- Panel administrativo: alta, edicion y eliminacion de productos protegidas por login. -->
+    <section class="admin-panel" id="adminPanel" aria-hidden="true">
+      <div class="admin-panel-heading">
+        <div>
+          <p class="eyebrow">Area privada</p>
+          <h2>Inventario</h2>
+          <p class="admin-intro">
+            Gestion protegida. Los cambios se guardan en el servidor.
+          </p>
+        </div>
+        <button
+          class="close-button"
+          id="closeAdmin"
+          type="button"
+          aria-label="Cerrar administracion"
+        >
+          &#10005;
+        </button>
+      </div>
+      <form class="product-form" id="productForm">
+        <input type="hidden" name="id" id="productId" />
+        <label>Nombre<input name="name" id="productName" required /></label>
+        <label
+          >Categoria<input name="category" id="productCategory" required
+        /></label>
+        <label
+          >Unidad<input name="unit" id="productUnit" value="libra" required
+        /></label>
+        <label
+          >Precio ($)<input
+            name="price"
+            id="productPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            required
+        /></label>
+        <label
+          >Stock<input
+            name="stock"
+            id="productStock"
+            type="number"
+            min="0"
+            step="1"
+            required
+        /></label>
+        <label class="form-wide"
+          >Imagen de presentacion<input
+            name="image"
+            id="productImage"
+            placeholder="basic_baseData/img/mi-producto.svg"
+          /><small
+            >Guarda la imagen en <strong>basic_baseData/img/</strong> y escribe
+            su ruta.</small
+          ></label
+        >
+        <label class="form-wide"
+          >Descripcion<textarea
+            name="description"
+            id="productDescription"
+            rows="2"
+          ></textarea>
+        </label>
+        <div class="form-actions">
+          <button class="primary-button" type="submit" id="saveProduct">
+            Añadir producto</button
+          ><button
+            class="secondary-button"
+            type="button"
+            id="cancelEdit"
+            hidden
+          >
+            Cancelar edicion
+          </button>
+        </div>
+      </form>
+      <p class="admin-message" id="adminMessage" role="status"></p>
+      <div class="inventory-list" id="inventoryList"></div>
+      <button class="secondary-button" id="logoutAdmin" type="button">
+        Cerrar sesion
+      </button>
+    </section>
+    <!-- Dialogo y fondo de autenticacion administrativa. -->
+    <div class="login-backdrop" id="loginBackdrop"></div>
+    <section
+      class="login-dialog"
+      id="loginDialog"
+      aria-hidden="true"
+      aria-labelledby="loginTitle"
+    >
+      <button
+        class="close-button"
+        id="closeLogin"
+        type="button"
+        aria-label="Cerrar acceso"
+      >
+        &#10005;
+      </button>
+      <p class="eyebrow">Area privada</p>
+      <h2 id="loginTitle">Acceso de inventario</h2>
+      <p>Introduce una de las claves autorizadas para continuar.</p>
+      <form id="loginForm">
+        <label for="adminPassword"
+          >Clave de acceso<input
+            id="adminPassword"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+        /></label>
+        <p class="login-error" id="loginError" role="alert"></p>
+        <button class="primary-button" type="submit">Entrar</button>
+      </form>
+    </section>
+    <!-- Carrito lateral: resumen del pedido y formulario de envio por WhatsApp. -->
+    <div class="order-backdrop" id="orderBackdrop"></div>
+    <aside
+      class="order-panel"
+      id="orderPanel"
+      aria-labelledby="orderTitle"
+      aria-hidden="true"
+    >
+      <div class="order-panel-inner">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Tu seleccion</p>
+            <h2 id="orderTitle">Mi pedido</h2>
+          </div>
+          <button
+            class="close-button"
+            id="closeOrder"
+            type="button"
+            aria-label="Cerrar pedido"
+          >
+            &#10005;
+          </button>
+        </div>
+        <ul class="cart-list" id="cartList"></ul>
+        <div class="cart-total-row">
+          <span>Total estimado</span><strong id="cartTotal">$0.00</strong>
+        </div>
+        <p class="delivery-note">
+          <strong>Entrega:</strong> recibirás tu pedido en un plazo máximo de 2
+          días.
+        </p>
+        <form class="order-form" id="orderForm">
+          <label for="clienteNombre"
+            >Nombre y apellido<input
+              type="text"
+              id="clienteNombre"
+              name="clienteNombre"
+              placeholder="Ej. Maria Torres"
+              required /></label
+          ><label for="clienteDireccion"
+            >Direccion de entrega<input
+              type="text"
+              id="clienteDireccion"
+              name="clienteDireccion"
+              placeholder="Calle, numero, referencia"
+              required /></label
+          ><label for="clientePago"
+            >Forma de pago<select id="clientePago" name="clientePago">
+              <option value="Efectivo">Efectivo contra entrega</option>
+              <option value="Transferencia">Transferencia bancaria</option>
+            </select></label
+          ><label for="clienteNotas"
+            >Nota para la entrega <span>(opcional)</span
+            ><textarea
+              id="clienteNotas"
+              name="clienteNotas"
+              rows="2"
+              placeholder="Ej. llamar al llegar"
+            ></textarea></label
+          ><button class="whatsapp-button" type="submit">
+            Enviar pedido por WhatsApp <span aria-hidden="true">&#8599;</span>
+          </button>
+        </form>
+      </div>
+    </aside>
+    <script src="js/app.js"></script>
+  </body>
+</html>
